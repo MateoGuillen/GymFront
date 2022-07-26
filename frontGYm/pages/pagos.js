@@ -11,7 +11,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -25,6 +24,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import InboxIcon from '@mui/icons-material/Inbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 
 const drawerWidth = 240;
@@ -174,6 +178,7 @@ export default function ClippedDrawer() {
           <Typography variant="h6" noWrap component="div">
             
             Standford Gym
+            <FitnessCenterIcon/>
             </Typography>
             <Search>
                 <SearchIconWrapper>
@@ -200,11 +205,11 @@ export default function ClippedDrawer() {
           <List>
             {['Pagos', 'Registrar Clientes'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
+                <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {index % 2 === 0 ? <AttachMoneyIcon /> : < PersonAddAlt1Icon/>}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text}/>
                 </ListItemButton>
               </ListItem>
             ))}

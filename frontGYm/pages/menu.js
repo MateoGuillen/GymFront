@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -11,7 +10,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -25,7 +23,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import InboxIcon from '@mui/icons-material/Inbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 const drawerWidth = 240;
 const Search = styled('div')(({ theme }) => ({
@@ -167,13 +177,18 @@ export default function ClippedDrawer() {
     </Menu>
   );
   return (
+    <ThemeProvider theme={darkTheme}>
+    <CssBaseline />
+    
+ 
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" href="/menu">
             
             Standford Gym
+            <FitnessCenterIcon/>
             </Typography>
             <Search>
                 <SearchIconWrapper>
@@ -200,11 +215,11 @@ export default function ClippedDrawer() {
           <List>
             {['Pagos', 'Registrar Clientes'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
+                <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {index % 2 === 0 ? <AttachMoneyIcon /> : < PersonAddAlt1Icon/>}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text}/>
                 </ListItemButton>
               </ListItem>
             ))}
@@ -217,5 +232,6 @@ export default function ClippedDrawer() {
         
       </Box>
     </Box>
+    </ThemeProvider>
   );
 }
