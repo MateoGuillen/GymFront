@@ -30,6 +30,16 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
+import InputLabel from '@mui/material/InputLabel';
+
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { TextField } from '@mui/material';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+
 
 const drawerWidth = 240;
 const Search = styled('div')(({ theme }) => ({
@@ -73,6 +83,16 @@ const Search = styled('div')(({ theme }) => ({
   }));
 
 export default function ClippedDrawer() {
+  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+
+  const handleChange2 = (newValue) => {
+    setValue(newValue);
+  };
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -217,10 +237,43 @@ export default function ClippedDrawer() {
           <Divider />
         </Box>
       </Drawer>
+      
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
+        <Typography variant="h3" color="initial" align="center">
+          Registrar Clientes
+        </Typography>
+        <TextField id="outlined-basic1" label="Nombre" variant="outlined" />
+        <TextField id="outlined-basic2" label="Apellido" variant="outlined" />
+        <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Age"
+          onChange={handleChange}
+        >
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+      <DesktopDatePicker
+          label="Fecha de Pago"
+          inputFormat="dd/MM/yyyy"
+          value={value}
+          onChange={handleChange2}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
+     
+
         
       </Box>
     </Box>
   );
 }
+
+

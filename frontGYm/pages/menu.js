@@ -30,11 +30,16 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { green, orange } from '@mui/material/colors';
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    //mode: 'dark',
+    primary: {
+      main: orange[400],
+    },
   },
+  
 });
 
 const drawerWidth = 240;
