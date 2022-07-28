@@ -38,6 +38,10 @@ import { TextField } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Stack from '@mui/material/Stack';
+import {esES } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import esLocale from 'date-fns/locale/es';
 
 
 
@@ -237,41 +241,71 @@ export default function ClippedDrawer() {
           <Divider />
         </Box>
       </Drawer>
-      
+    
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+
         <Toolbar />
-        <Typography variant="h3" color="initial" align="center">
+
+        <Typography variant="h3" color="primary" align="center">
           Registrar Clientes
         </Typography>
-        <TextField id="outlined-basic1" label="Nombre" variant="outlined" />
-        <TextField id="outlined-basic2" label="Apellido" variant="outlined" />
-        <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-      <LocalizationProvider dateAdapter={AdapterMoment}>
-      <DesktopDatePicker
-          label="Fecha de Pago"
-          inputFormat="dd/MM/yyyy"
-          value={value}
-          onChange={handleChange2}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-     
+
+
+       
+        <Box sx={{ width: '30%' }}>
+          <Stack spacing={3}>
+            <TextField id="outlined-basic1" label="Nombre y Apellido" variant="outlined" />
+            <TextField id="outlined-basic2" label="Telefono" variant="outlined" />
+            <br></br>
+         </Stack>
+       </Box>
+
+       <Box sx={{ width: '30%' }}>
+          <Stack spacing={5}>
+            <FormControl variant="standard" >
+              <InputLabel id="labelSelect1">
+                Modalidad
+              </InputLabel>
+              <Select
+                labelId="labelSelect1"
+                id="selectModalidad"
+                value={age}
+                label="Age"
+                onChange={handleChange}
+              >
+                <MenuItem value={10}>Musculacion</MenuItem>
+                <MenuItem value={20}>Funcional</MenuItem>
+                <MenuItem value={30}>Musculacion y Funcional</MenuItem>
+              </Select>
+            </FormControl>
+
+            <LocalizationProvider 
+              dateAdapter={AdapterDateFns}
+              adapterLocale={esLocale}
+              localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+            >
+              <DesktopDatePicker
+                  label="Fecha"
+                  inputFormat="dd/MM/yyyy"
+                  value={value}
+                  onChange={handleChange2}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+           </LocalizationProvider>
+
+          <Button variant="contained" color="primary">
+            Registrar
+          </Button>
+         </Stack>
+       </Box>
+      
+
+       
 
         
+
       </Box>
+
     </Box>
   );
 }

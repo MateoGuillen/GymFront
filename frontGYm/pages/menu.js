@@ -218,7 +218,7 @@ export default function ClippedDrawer() {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {['Pagos', 'Registrar Clientes'].map((text, index) => (
+            {['Cuotas', 'Registrar Clientes'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
                   <ListItemIcon>

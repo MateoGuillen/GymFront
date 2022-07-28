@@ -29,7 +29,125 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import Stack from '@mui/material/Stack';
+import { DataGrid, esES as esEsData } from '@mui/x-data-grid';
+import { TablePagination } from '@mui/material';
+import Modal from '@mui/material/Modal';
+import { TextField } from '@mui/material';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import {esES as esEsDate} from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import esLocale from 'date-fns/locale/es';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+const renderDetailsButton = (params) => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+
+  const handleChange2 = (newValue) => {
+    setValue(newValue);
+  };
+  return (
+      <div>
+          <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{ marginLeft: 16 }}
+              onClick={handleOpen} //open modal
+          >
+              Cobrar
+          </Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Pago de Cuota
+              </Typography>
+              <LocalizationProvider 
+                dateAdapter={AdapterDateFns}
+                adapterLocale={esLocale}
+                localeText={esEsDate.components.MuiLocalizationProvider.defaultProps.localeText}
+              >
+                <DesktopDatePicker
+                    label="Fecha"
+                    inputFormat="dd/MM/yyyy"
+                    value={value}
+                    onChange={handleChange2}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+              </LocalizationProvider>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              </Typography>
+            </Box>
+        </Modal>
+      </div>
+  )
+}
+
+const columns = [
+ // { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'nombre', headerName: 'Nombre y Apellido', width: 260 },
+  {
+    field: 'telefono',
+    headerName: 'Telefono',
+    type: 'number',
+    width: 180,
+  },
+  //{ field: 'modalidad', headerName: 'Modalidad', width: 200 },
+  { field: 'fecha2', headerName: 'Fecha Pagada', width: 230, type: 'date' },
+  { field: 'fecha', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
+  { field: 'pagado', headerName: 'Pagado', width: 200 ,type: 'boolean'},
+  //{ field: 'opciones', headerName: 'Opciones', width: 200},
+  {
+    field: 'col6',
+    headerName: 'Opciones',
+    width: 150,
+    renderCell: renderDetailsButton,
+    disableClickEventBubbling: true,
+},
+ /* {
+    field: 'fullName',
+    headerName: 'Full name',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 180,
+    valueGetter: (params) =>
+      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+  },
+  */
+];
+
+const rows = [
+  { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha:'28/07/2022', pagado: 'true', fecha2:'28/06/2022'},
+  { id: 2, lastName: 'Lannister', nombre: 'Cersei', telefono: 42,modalidad:'Musculacion' , fecha:'25/07/2022'},
+  { id: 3, lastName: 'Lannister', nombre: 'Jaime', telefono: 45,modalidad:'Musculacion' , fecha:'26/07/2022'},
+  { id: 4, lastName: 'Stark', nombre: 'Arya', telefono: 16,modalidad:'Musculacion' , fecha:'28/06/2022'},
+  { id: 5, lastName: 'Targaryen', nombre: 'Daenerys', telefono: 544,modalidad:'Funcional' , fecha:'10/07/2022'},
+  { id: 6, lastName: 'Melisandre', nombre: 'Juan', telefono: 150 ,modalidad:'Funcional', fecha:'09/07/2022'},
+  { id: 7, lastName: 'Clifford', nombre: 'Ferrara', telefono: 44 ,modalidad:'Funcional', fecha:'05/05/2022'},
+  { id: 8, lastName: 'Frances', nombre: 'Rossini', telefono: 36 ,modalidad:'Musculacion y Funcional', fecha:'29/08/2022'},
+  { id: 9, lastName: 'Roxie', nombre: 'Harvey', telefono: 65 ,modalidad:'Musculacion y Funcional', fecha:'15/07/2022'},
+];
 
 const drawerWidth = 240;
 const Search = styled('div')(({ theme }) => ({
@@ -203,7 +321,7 @@ export default function ClippedDrawer() {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {['Pagos', 'Registrar Clientes'].map((text, index) => (
+            {['Cuotas', 'Registrar Clientes'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
                   <ListItemIcon>
@@ -217,10 +335,30 @@ export default function ClippedDrawer() {
           <Divider />
         </Box>
       </Drawer>
+      
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        
+      <br></br><br></br>
+        <Typography variant="h3" color="primary" align="center">
+            Cuotas
+        </Typography>
+
+        <Box sx={{ width: '100%' }}>
+            <Stack spacing={5}>
+
+              <div style={{ height: 800, width: '100%' }}>
+                <DataGrid
+                  localeText={esEsData.components.MuiDataGrid.defaultProps.localeText}
+                  rows={rows}
+                  columns={columns}
+                  pageSize={20}
+                  rowsPerPageOptions={[20,30,40]}
+                  //checkboxSelection
+                />
+            </div>
+            </Stack>
+        </Box>
       </Box>
+      
     </Box>
   );
 }
