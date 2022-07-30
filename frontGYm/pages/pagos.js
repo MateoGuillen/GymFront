@@ -39,6 +39,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {esES as esEsDate} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import esLocale from 'date-fns/locale/es';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 const style = {
   position: 'absolute',
@@ -61,6 +65,18 @@ const renderDetailsButton = (params) => {
   const handleChange2 = (newValue) => {
     setValue(newValue);
   };
+  const [values, setValues] = React.useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+
+  const handleChange3 = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
   return (
       <div>
           <Button
@@ -79,25 +95,39 @@ const renderDetailsButton = (params) => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Pago de Cuota
-              </Typography>
-              <LocalizationProvider 
-                dateAdapter={AdapterDateFns}
-                adapterLocale={esLocale}
-                localeText={esEsDate.components.MuiLocalizationProvider.defaultProps.localeText}
-              >
-                <DesktopDatePicker
-                    label="Fecha"
-                    inputFormat="dd/MM/yyyy"
-                    value={value}
-                    onChange={handleChange2}
-                    renderInput={(params) => <TextField {...params} />}
+              <Stack spacing={3}>
+                <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
+                  Pago de Cuota
+                </Typography>
+                <LocalizationProvider 
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={esLocale}
+                  localeText={esEsDate.components.MuiLocalizationProvider.defaultProps.localeText}
+                >
+                  <DesktopDatePicker
+                      label="Fecha"
+                      inputFormat="dd/MM/yyyy"
+                      value={value}
+                      onChange={handleChange2}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                </LocalizationProvider>
+                <FormControl fullWidth sx={{ m: 1 }}>
+                  <InputLabel htmlFor="outlined-adornment-amount">Monto</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-amount"
+                    value={values.amount}
+                    onChange={handleChange3('amount')}
+                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                    label="Monto"
+                    type="number"
                   />
-              </LocalizationProvider>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
+              </FormControl>
+              <Button variant="contained" color="primary">
+                 Guardar
+               </Button>
+              </Stack>
+              
             </Box>
         </Modal>
       </div>
