@@ -43,6 +43,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { startOfToday, addDays, isAfter } from 'date-fns'
 
 const style = {
   position: 'absolute',
@@ -60,7 +61,7 @@ const renderDetailsButton = (params) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [value, setValue] = React.useState(startOfToday());
 
   const handleChange2 = (newValue) => {
     setValue(newValue);
@@ -144,15 +145,15 @@ const columns = [
     width: 180,
   },
   //{ field: 'modalidad', headerName: 'Modalidad', width: 200 },
-  { field: 'fecha2', headerName: 'Fecha Pagada', width: 230, type: 'date' },
-  { field: 'fecha', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
+  { field: 'fecha', headerName: 'Fecha Pagada', width: 230, type: 'date' },
+  { field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
   { field: 'pagado', headerName: 'Pagado', width: 200 ,type: 'boolean'},
   //{ field: 'opciones', headerName: 'Opciones', width: 200},
   {
     field: 'col6',
     headerName: 'Opciones',
     width: 150,
-    renderCell: renderDetailsButton,
+    renderCell: renderDetailsButton, // render a component in columns, renderDetailsButton is the component
     disableClickEventBubbling: true,
 },
  /* {
@@ -168,16 +169,27 @@ const columns = [
 ];
 
 const rows = [
-  { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha:'28/07/2022', pagado: 'true', fecha2:'28/06/2022'},
-  { id: 2, lastName: 'Lannister', nombre: 'Cersei', telefono: 42,modalidad:'Musculacion' , fecha:'25/07/2022'},
-  { id: 3, lastName: 'Lannister', nombre: 'Jaime', telefono: 45,modalidad:'Musculacion' , fecha:'26/07/2022'},
-  { id: 4, lastName: 'Stark', nombre: 'Arya', telefono: 16,modalidad:'Musculacion' , fecha:'28/06/2022'},
-  { id: 5, lastName: 'Targaryen', nombre: 'Daenerys', telefono: 544,modalidad:'Funcional' , fecha:'10/07/2022'},
-  { id: 6, lastName: 'Melisandre', nombre: 'Juan', telefono: 150 ,modalidad:'Funcional', fecha:'09/07/2022'},
-  { id: 7, lastName: 'Clifford', nombre: 'Ferrara', telefono: 44 ,modalidad:'Funcional', fecha:'05/05/2022'},
-  { id: 8, lastName: 'Frances', nombre: 'Rossini', telefono: 36 ,modalidad:'Musculacion y Funcional', fecha:'29/08/2022'},
-  { id: 9, lastName: 'Roxie', nombre: 'Harvey', telefono: 65 ,modalidad:'Musculacion y Funcional', fecha:'15/07/2022'},
+  { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha: new Date(2022,5,5)},
+  { id: 2, lastName: 'Lannister', nombre: 'Cersei', telefono: 42,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 3, lastName: 'Lannister', nombre: 'Jaime', telefono: 45,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 4, lastName: 'Stark', nombre: 'Arya', telefono: 16,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 5, lastName: 'Targaryen', nombre: 'Daenerys', telefono: 544,modalidad:'Funcional' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 6, lastName: 'Melisandre', nombre: 'Juan', telefono: 150 ,modalidad:'Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 7, lastName: 'Clifford', nombre: 'Ferrara', telefono: 44 ,modalidad:'Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 8, lastName: 'Frances', nombre: 'Rossini', telefono: 36 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 9, lastName: 'Roxie', nombre: 'Harvey', telefono: 65 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
 ];
+
+rows.forEach((row,index) => {
+  //rowsDate[index].id = addDays(row.fecha, 30);
+  rows[index].fechaProximoPago = addDays(row.fecha, 30);
+
+  if( isAfter( rows[index].fechaProximoPago ,startOfToday( ) ) ){
+    rows[index].pagado = true;
+  }
+});
+
+//https://mui.com/x/react-data-grid/style/#styling-rows
 
 const drawerWidth = 240;
 const Search = styled('div')(({ theme }) => ({
@@ -385,7 +397,11 @@ export default function ClippedDrawer() {
                   //checkboxSelection
                 />
             </div>
+            <Typography variant="subtitle1" color="primary" align="center">
+            {console.log(addDays(startOfToday(), 31))}
+            </Typography>
             </Stack>
+
         </Box>
       </Box>
       
