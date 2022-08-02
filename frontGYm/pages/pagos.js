@@ -44,6 +44,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { startOfToday, addDays, isAfter } from 'date-fns'
+import { darken, lighten } from '@mui/material/styles';
+
+import Select from '@mui/material/Select';
+
+
+const getBackgroundColor = (color, mode) =>
+  mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
+
+const getHoverBackgroundColor = (color, mode) =>
+  mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
 
 const style = {
   position: 'absolute',
@@ -58,6 +68,15 @@ const style = {
 };
 
 const renderDetailsButton = (params) => {
+  const [modalidad, setModalidad] = React.useState('');
+  const handleChangeModalidad = (event) => {
+    setModalidad(event.target.value);
+  };
+  const [tipoPago, setTipoPago] = React.useState('');
+  const handleChangeTipoPago = (event) => {
+    setTipoPago(event.target.value);
+  };
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -66,17 +85,19 @@ const renderDetailsButton = (params) => {
   const handleChange2 = (newValue) => {
     setValue(newValue);
   };
-  const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
+
+  const [monto, setMonto] = React.useState('');
+  const handleChangeMonto = event => {
+    setMonto(event.target.value);
+    console.log(monto)
+  };
+
 
   const handleChange3 = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
+
+  
 
   return (
       <div>
@@ -100,6 +121,38 @@ const renderDetailsButton = (params) => {
                 <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
                   Pago de Cuota
                 </Typography>
+                <FormControl variant="standard" >
+                  <InputLabel id="labelSelect1">
+                    Modalidad
+                  </InputLabel>
+                  <Select
+                    labelId="labelSelect1"
+                    id="selectModalidad"
+                    value={modalidad}
+                    label="Modalidad"
+                    onChange={handleChangeModalidad}
+                  >
+                    <MenuItem value={10}>Musculacion</MenuItem>
+                    <MenuItem value={20}>Funcional</MenuItem>
+                    <MenuItem value={30}>Musculacion y Funcional</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl variant="standard" >
+                  <InputLabel id="labelSelect2">
+                    Forma de Pago
+                  </InputLabel>
+                  <Select
+                    labelId="labelSelect2"
+                    id="selectTipoPago"
+                    value={tipoPago}
+                    label="Forma de Pago"
+                    onChange={handleChangeTipoPago}
+                  >
+                    <MenuItem value={10}>Mensual</MenuItem>
+                    <MenuItem value={20}>Diario</MenuItem>
+                    <MenuItem value={30}>Semanal</MenuItem>
+                  </Select>
+                </FormControl>
                 <LocalizationProvider 
                   dateAdapter={AdapterDateFns}
                   adapterLocale={esLocale}
@@ -113,20 +166,19 @@ const renderDetailsButton = (params) => {
                       renderInput={(params) => <TextField {...params} />}
                     />
                 </LocalizationProvider>
-                <FormControl fullWidth sx={{ m: 1 }}>
-                  <InputLabel htmlFor="outlined-adornment-amount">Monto</InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-amount"
-                    value={values.amount}
-                    onChange={handleChange3('amount')}
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    label="Monto"
-                    type="number"
-                  />
-              </FormControl>
-              <Button variant="contained" color="primary">
-                 Guardar
-               </Button>
+                
+
+                  <TextField 
+                  id="outlined-basic3" 
+                  label="Monto" 
+                  variant="outlined" 
+                  //type="number"
+                  value={monto}
+                  onChange={handleChangeMonto}/>
+                
+                <Button variant="contained" color="primary">
+                  Guardar
+                </Button>
               </Stack>
               
             </Box>
@@ -137,17 +189,20 @@ const renderDetailsButton = (params) => {
 
 const columns = [
  // { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'nombre', headerName: 'Nombre y Apellido', width: 260 },
-  {
+  { field: 'nombre', headerName: 'Nombre y Apellido', width: 260, headerAlign: 'center'},
+/*  {
     field: 'telefono',
     headerName: 'Telefono',
     type: 'number',
     width: 180,
-  },
-  //{ field: 'modalidad', headerName: 'Modalidad', width: 200 },
+  },*/
+
+  { field: 'modalidad', headerName: 'Modalidad', width: 200},
+  {field: 'tipoPago',headerName: 'Forma de Pago', width: 200},
   { field: 'fecha', headerName: 'Fecha Pagada', width: 230, type: 'date' },
-  { field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
-  { field: 'pagado', headerName: 'Pagado', width: 200 ,type: 'boolean'},
+  { field: 'monto', headerName: 'Monto', width: 200},
+  //{ field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
+  { field: 'pagado', headerName: 'Pagado', width: 100 ,type: 'boolean'},
   //{ field: 'opciones', headerName: 'Opciones', width: 200},
   {
     field: 'col6',
@@ -169,23 +224,30 @@ const columns = [
 ];
 
 const rows = [
-  { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha: new Date(2022,5,5)},
-  { id: 2, lastName: 'Lannister', nombre: 'Cersei', telefono: 42,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 3, lastName: 'Lannister', nombre: 'Jaime', telefono: 45,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 4, lastName: 'Stark', nombre: 'Arya', telefono: 16,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 5, lastName: 'Targaryen', nombre: 'Daenerys', telefono: 544,modalidad:'Funcional' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 6, lastName: 'Melisandre', nombre: 'Juan', telefono: 150 ,modalidad:'Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 7, lastName: 'Clifford', nombre: 'Ferrara', telefono: 44 ,modalidad:'Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 8, lastName: 'Frances', nombre: 'Rossini', telefono: 36 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
-  { id: 9, lastName: 'Roxie', nombre: 'Harvey', telefono: 65 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32))},
+  { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha: new Date(2022,5,5), tipoPago: 'Mensual'},
+  { id: 2, lastName: 'Lannister', nombre: 'Cersei', telefono: 42,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Diario'},
+  { id: 3, lastName: 'Lannister', nombre: 'Jaime', telefono: 45,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Mensual'},
+  { id: 4, lastName: 'Stark', nombre: 'Arya', telefono: 16,modalidad:'Musculacion' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Mensual'},
+  { id: 5, lastName: 'Targaryen', nombre: 'Daenerys', telefono: 544,modalidad:'Funcional' , fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Mensual'},
+  { id: 6, lastName: 'Melisandre', nombre: 'Juan', telefono: 150 ,modalidad:'Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Mensual'},
+  { id: 7, lastName: 'Clifford', nombre: 'Ferrara', telefono: 44 ,modalidad:'Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Mensual'},
+  { id: 8, lastName: 'Frances', nombre: 'Rossini', telefono: 36 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Mensual'},
+  { id: 9, lastName: 'Roxie', nombre: 'Harvey', telefono: 65 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Semanal'},
 ];
 
 rows.forEach((row,index) => {
   //rowsDate[index].id = addDays(row.fecha, 30);
-  rows[index].fechaProximoPago = addDays(row.fecha, 30);
+  if(rows[index].tipoPago == 'Mensual'){
+    rows[index].fechaProximoPago = addDays(row.fecha, 30);
+  }else if(rows[index].tipoPago == 'Semanal'){
+    rows[index].fechaProximoPago = addDays(row.fecha, 7);
+  }
+  
 
-  if( isAfter( rows[index].fechaProximoPago ,startOfToday( ) ) ){
+  if( isAfter( rows[index].fechaProximoPago ,startOfToday( ) ) || rows[index].tipoPago == 'Diario'){
     rows[index].pagado = true;
+  }else{
+    rows[index].pagado = false;
   }
 });
 
@@ -234,6 +296,7 @@ const Search = styled('div')(({ theme }) => ({
 
 export default function ClippedDrawer() {
 
+  
     const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -384,9 +447,34 @@ export default function ClippedDrawer() {
             Cuotas
         </Typography>
 
-        <Box sx={{ width: '100%' }}>
+        <Box
+          sx={{
+            height: 400,
+            width: '100%',
+            '& .super-app-theme--true': {
+              bgcolor: (theme) =>
+                //getBackgroundColor(theme.palette.success.main, theme.palette.mode),
+                '#BEFFC5  ',
+              '&:hover': {
+                bgcolor: (theme) =>
+                  getHoverBackgroundColor(
+                    theme.palette.success.main,
+                    theme.palette.mode,
+                  ),
+              },
+            },
+            '& .super-app-theme--false': {
+              bgcolor: (theme) =>
+                '#FC6060  ',
+                //getBackgroundColor(theme.palette.error.main, theme.palette.mode),
+              '&:hover': {
+                bgcolor: (theme) =>
+                  getHoverBackgroundColor(theme.palette.error.main, theme.palette.mode),
+              },
+            },
+          }}
+        >
             <Stack spacing={5}>
-
               <div style={{ height: 800, width: '100%' }}>
                 <DataGrid
                   localeText={esEsData.components.MuiDataGrid.defaultProps.localeText}
@@ -394,6 +482,10 @@ export default function ClippedDrawer() {
                   columns={columns}
                   pageSize={20}
                   rowsPerPageOptions={[20,30,40]}
+                  getRowClassName={(params) => `super-app-theme--${params.row.pagado}`}s
+
+                  
+
                   //checkboxSelection
                 />
             </div>

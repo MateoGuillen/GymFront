@@ -87,6 +87,12 @@ const Search = styled('div')(({ theme }) => ({
   }));
 
 export default function ClippedDrawer() {
+
+  const [nombre, setNombre] = React.useState('');
+  const handleChangeNombre = (event) =>{
+    setNombre(event.target.value)
+    console.log(nombre)
+  }
   const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
 
   const handleChange2 = (newValue) => {
@@ -96,6 +102,7 @@ export default function ClippedDrawer() {
 
   const handleChange = (event) => {
     setAge(event.target.value);
+    
   };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -254,7 +261,9 @@ export default function ClippedDrawer() {
        
         <Box sx={{ width: '30%' }}>
           <Stack spacing={3}>
-            <TextField id="outlined-basic1" label="Nombre y Apellido" variant="outlined" />
+            <TextField id="outlined-basic1" label="Nombre y Apellido" variant="outlined"
+              value={nombre}
+              onChange={handleChangeNombre} />
             <TextField id="outlined-basic2" label="Telefono" variant="outlined" />
             <br></br>
          </Stack>
