@@ -86,9 +86,18 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
 
-export default function ClippedDrawer() {
+  //const tiposPagos = ['Mensual', 'Diario', 'Semanal']
 
-  const [nombre, setNombre] = React.useState('');
+
+export default function ClippedDrawer() {
+  const [tiposPagos, settiposPagos] = React.useState([
+    "Mensual",
+    "Diario",
+    "Semanal"
+  ]);
+
+
+  const [nombre, setNombre] = React.useState('aad');
   const handleChangeNombre = (event) =>{
     setNombre(event.target.value)
     console.log(nombre)
@@ -98,12 +107,27 @@ export default function ClippedDrawer() {
   const handleChange2 = (newValue) => {
     setValue(newValue);
   };
-  const [age, setAge] = React.useState('');
+  const [modalidad, setmodalidad] = React.useState('Musculacion');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleChangeModalidad = (event) => {
+    console.log(modalidad);
+    setmodalidad(event.target.value);
+    
     
   };
+  
+
+  const [tipopago, settipopago] = React.useState('');
+
+  const handleChangetipopago = (event) => {
+    settipopago(event.target.value);
+    console.log(tipopago);
+    
+  };
+
+  const onClickRegistrar = (event)=>{
+    console.log(modalidad)
+  }
 
     const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -208,7 +232,7 @@ export default function ClippedDrawer() {
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
             
-            Standford Gym
+            Standford Gym 
             <FitnessCenterIcon/>
             </Typography>
             <Search>
@@ -264,7 +288,7 @@ export default function ClippedDrawer() {
             <TextField id="outlined-basic1" label="Nombre y Apellido" variant="outlined"
               value={nombre}
               onChange={handleChangeNombre} />
-            <TextField id="outlined-basic2" label="Telefono" variant="outlined" />
+            {/*<TextField id="outlined-basic2" label="Telefono" variant="outlined" />*/}
             <br></br>
          </Stack>
        </Box>
@@ -276,17 +300,42 @@ export default function ClippedDrawer() {
                 Modalidad
               </InputLabel>
               <Select
-                labelId="labelSelect1"
+              labelId="labelSelect1"
                 id="selectModalidad"
-                value={age}
-                label="Age"
-                onChange={handleChange}
+                value={modalidad}
+                label="Modalidad"
+                onChange={handleChangeModalidad}
+              
               >
-                <MenuItem value={10}>Musculacion</MenuItem>
-                <MenuItem value={20}>Funcional</MenuItem>
-                <MenuItem value={30}>Musculacion y Funcional</MenuItem>
+                
+                <MenuItem value="Musculacion">Musculacion</MenuItem>
+                <MenuItem value="Funcional">Funcional</MenuItem>
+                <MenuItem value="Musculacion y Funcional">Musculacion y Funcional</MenuItem>
               </Select>
+
+
             </FormControl>
+            <FormControl variant="standard" >
+            <InputLabel id="labelSelect2">
+                Forma de Pago
+              </InputLabel>
+              <Select
+                labelId="labelSelect2"
+                id="selectTipoPago"
+                value={tipopago}
+                label="Forma de Pago"
+                onChange={handleChangetipopago}
+              >
+                {tiposPagos.map((value, index) => {
+                  return <MenuItem value={value}>{value}</MenuItem>;
+                })}
+                {/* <MenuItem value="Mensual">Mensual</MenuItem>
+                <MenuItem value="Diario">Diario</MenuItem>
+                <MenuItem value="Semanal">Semanal</MenuItem> */}
+              </Select>
+
+            </FormControl>
+          
 
             <LocalizationProvider 
               dateAdapter={AdapterDateFns}
@@ -302,7 +351,11 @@ export default function ClippedDrawer() {
                 />
            </LocalizationProvider>
 
-          <Button variant="contained" color="primary">
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={onClickRegistrar}
+          >
             Registrar
           </Button>
          </Stack>
