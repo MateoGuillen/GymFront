@@ -199,8 +199,8 @@ const columns = [
 
   { field: 'modalidad', headerName: 'Modalidad', width: 200},
   {field: 'tipoPago',headerName: 'Forma de Pago', width: 200},
-  { field: 'fecha', headerName: 'Fecha Pagada', width: 230, type: 'date' },
-  { field: 'monto', headerName: 'Monto', width: 200},
+  { field: 'fecha', headerName: 'Fecha', width: 100, type: 'date' },
+  { field: 'monto', headerName: 'Monto', width: 120},
   //{ field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
   { field: 'pagado', headerName: 'Pagado', width: 100 ,type: 'boolean'},
   //{ field: 'opciones', headerName: 'Opciones', width: 200},
