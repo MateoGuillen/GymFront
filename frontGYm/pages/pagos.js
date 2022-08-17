@@ -47,6 +47,7 @@ import { startOfToday, addDays, isAfter } from 'date-fns'
 import { darken, lighten } from '@mui/material/styles';
 
 import Select from '@mui/material/Select';
+const axios = require('axios');
 
 
 const getBackgroundColor = (color, mode) =>
@@ -222,6 +223,21 @@ const columns = [
   },
   */
 ];
+
+// Make a request for a user with a given ID
+axios.get('http://localhost:8080/api/cuotas')
+  .then(function (response) {
+    // handle success
+    console.log(response.data);
+    //const rows = response.data
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
 
 const rows = [
   { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha: new Date(2022,5,5), tipoPago: 'Mensual'},
