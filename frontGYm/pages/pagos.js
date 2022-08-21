@@ -94,10 +94,6 @@ const renderDetailsButton = (params) => {
   };
 
 
-  const handleChange3 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
   
 
   return (
@@ -111,6 +107,8 @@ const renderDetailsButton = (params) => {
           >
               Cobrar
           </Button>
+          
+          
           <Modal
             open={open}
             onClose={handleClose}
@@ -154,6 +152,15 @@ const renderDetailsButton = (params) => {
                     <MenuItem value={30}>Semanal</MenuItem>
                   </Select>
                 </FormControl>
+                <FormControl variant="standart">
+                  <TextField 
+                  id="outlined-basic3" 
+                  label="Monto" 
+                  variant="outlined" 
+                  //type="number"
+                  value={monto}
+                  onChange={handleChangeMonto}/>
+                </FormControl>
                 <LocalizationProvider 
                   dateAdapter={AdapterDateFns}
                   adapterLocale={esLocale}
@@ -169,13 +176,7 @@ const renderDetailsButton = (params) => {
                 </LocalizationProvider>
                 
 
-                  <TextField 
-                  id="outlined-basic3" 
-                  label="Monto" 
-                  variant="outlined" 
-                  //type="number"
-                  value={monto}
-                  onChange={handleChangeMonto}/>
+                  
                 
                 <Button variant="contained" color="primary">
                   Guardar
@@ -199,7 +200,7 @@ const columns = [
   },*/
 
   { field: 'modalidad', headerName: 'Modalidad', width: 200},
-  {field: 'tipoPago',headerName: 'Forma de Pago', width: 200},
+  {field: 'tipo',headerName: 'Forma de Pago', width: 200},
   { field: 'fecha', headerName: 'Fecha', width: 100, type: 'date' },
   { field: 'monto', headerName: 'Monto', width: 120},
   //{ field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
@@ -223,21 +224,10 @@ const columns = [
   },
   */
 ];
-
+//const rows=[];
 // Make a request for a user with a given ID
-axios.get('http://localhost:8080/api/cuotas')
-  .then(function (response) {
-    // handle success
-    console.log(response.data);
-    //const rows = response.data
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .then(function () {
-    // always executed
-  });
+
+/*
 
 const rows = [
   { id: 1, lastName: 'Snow', nombre: 'Jon', telefono: 35 ,modalidad:'Musculacion', fecha: new Date(2022,5,5), tipoPago: 'Mensual'},
@@ -251,21 +241,10 @@ const rows = [
   { id: 9, lastName: 'Roxie', nombre: 'Harvey', telefono: 65 ,modalidad:'Musculacion y Funcional', fecha:addDays(startOfToday(), Math.floor(Math.random() * 32)), tipoPago: 'Semanal'},
 ];
 
-rows.forEach((row,index) => {
-  //rowsDate[index].id = addDays(row.fecha, 30);
-  if(rows[index].tipoPago == 'Mensual'){
-    rows[index].fechaProximoPago = addDays(row.fecha, 30);
-  }else if(rows[index].tipoPago == 'Semanal'){
-    rows[index].fechaProximoPago = addDays(row.fecha, 7);
-  }
-  
+*/
 
-  if( isAfter( rows[index].fechaProximoPago ,startOfToday( ) ) || rows[index].tipoPago == 'Diario'){
-    rows[index].pagado = true;
-  }else{
-    rows[index].pagado = false;
-  }
-});
+
+
 
 //https://mui.com/x/react-data-grid/style/#styling-rows
 
@@ -312,8 +291,38 @@ const Search = styled('div')(({ theme }) => ({
 
 export default function ClippedDrawer() {
 
-  
-    const [anchorEl, setAnchorEl] = React.useState(null);
+  const [rows, setrows] = React.useState([])
+
+  React.useEffect(() => {
+    refreshRowList();
+  }, [])
+
+  function refreshRowList() {
+    const cuotaAPI = axios.get('http://localhost:8080/api/cuotas/test')
+      .then((res) =>{
+        
+        res.data.forEach((row,index) => {
+          //rowsDate[index].id = addDays(row.fecha, 30);
+         /* if(rows[index].tipoPago == 'Mensual'){
+            rows[index].fechaProximoPago = addDays(row.fecha, 30);
+          }else if(rows[index].tipoPago == 'Semanal'){
+            rows[index].fechaProximoPago = addDays(row.fecha, 7);
+          }*/
+
+          console.log(typeof(res.data[index].fechaProximoPago))
+          
+          if( isAfter( res.data[index].fechaProximoPago ,startOfToday( ) ) || res.data[index].tipo == 'Diario'){
+            res.data[index].pagado = true;
+          }else{
+            res.data[index].pagado = false;
+          }
+        });
+
+        setrows(res.data)
+      } )
+      .catch(err => console.log(err))
+  }
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);

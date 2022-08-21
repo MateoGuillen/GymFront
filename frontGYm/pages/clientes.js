@@ -43,6 +43,13 @@ import {esES } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import esLocale from 'date-fns/locale/es';
 
+import Swal from 'sweetalert2'
+
+//import Swal from 'sweetalert2/dist/sweetalert2.js'
+import {alert2,alert3} from '../notifications/alerts'
+
+const axios = require('axios');
+
 
 
 const drawerWidth = 240;
@@ -90,6 +97,43 @@ const Search = styled('div')(({ theme }) => ({
 
 
 export default function ClippedDrawer() {
+
+  const sw = () =>{
+    alert3.title="Registrado Correctamente!"
+    Swal.fire(alert3)
+  }
+
+  const onClickRegistrar = (event)=>{
+    //alert3.title="Registrado Correctamente!"
+    axios.post('http://localhost:8080/api/customers', 
+    {
+      nombre:nombre
+    }
+    )
+    .then( (res1) =>{
+      console.log(res1);
+      var cuotaPost = {
+        modalidad:modalidad,
+        tipo:tipopago,
+        monto:monto,
+        fecha:value,
+        customerId: res1.data.id
+       }
+       console.log(cuotaPost)
+
+      axios.post('http://localhost:8080/api/cuotas', cuotaPost
+      ).then(res2=>{
+        console.log(res2)
+        Swal.fire(alert3)
+      }).catch(error => console.log(error))
+      //Swal.fire(alert3)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    
+  }
+  
   const [tiposPagos, settiposPagos] = React.useState([
     "Mensual",
     "Diario",
@@ -97,23 +141,27 @@ export default function ClippedDrawer() {
   ]);
 
 
-  const [nombre, setNombre] = React.useState('aad');
+  const [nombre, setNombre] = React.useState('');
   const handleChangeNombre = (event) =>{
     setNombre(event.target.value)
     console.log(nombre)
   }
-  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
 
+  const [monto, setmonto] = React.useState('');
+  const handleChangemonto = (event) =>{
+    setmonto(event.target.value)
+    console.log(monto)
+  }
+
+  const [value, setValue] = React.useState(new Date());
   const handleChange2 = (newValue) => {
     setValue(newValue);
   };
-  const [modalidad, setmodalidad] = React.useState('Musculacion');
 
+  const [modalidad, setmodalidad] = React.useState('Musculacion');
   const handleChangeModalidad = (event) => {
     console.log(modalidad);
     setmodalidad(event.target.value);
-    
-    
   };
   
 
@@ -125,9 +173,7 @@ export default function ClippedDrawer() {
     
   };
 
-  const onClickRegistrar = (event)=>{
-    console.log(modalidad)
-  }
+  
 
     const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -335,7 +381,12 @@ export default function ClippedDrawer() {
               </Select>
 
             </FormControl>
-          
+            
+
+              <TextField id="outlined-basic1" label="Monto" variant="outlined"
+                value={monto}
+                onChange={handleChangemonto} />
+             
 
             <LocalizationProvider 
               dateAdapter={AdapterDateFns}

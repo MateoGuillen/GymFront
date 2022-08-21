@@ -1,10 +1,11 @@
 
 const alert3 = {
-    position: 'top-end',
+    //position: 'top-end',
     icon: 'success',
-    title: 'SweetAlert2 its work :D',
+    title: "<h5 style='color:#ff9800'>" + "Registrado Correctamente!" + "</h5>",
     showConfirmButton: false,
-    timer: 1500
+    timer: 1500,
+    background: '#424242',
     }
 
 const alert2 = {
