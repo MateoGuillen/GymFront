@@ -14,24 +14,17 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Badge from '@mui/material/Badge';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import Stack from '@mui/material/Stack';
 import { DataGrid, esES as esEsData } from '@mui/x-data-grid';
-import { TablePagination } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
@@ -40,24 +33,15 @@ import {esES as esEsDate} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import esLocale from 'date-fns/locale/es';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import { startOfToday, addDays, isAfter, parseISO } from 'date-fns'
 import { darken, lighten } from '@mui/material/styles';
-
 import Select from '@mui/material/Select';
 import Swal from 'sweetalert2'
-
-//import Swal from 'sweetalert2/dist/sweetalert2.js'
 import {alert2,alert3} from '../notifications/alerts'
-import PaidIcon from '@mui/icons-material/Paid';
-
 const axios = require('axios');
-import Container from '@mui/material/Container';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-
 
 
 const getBackgroundColor = (color, mode) =>
@@ -185,7 +169,7 @@ const renderDetailsButton = (params) => {
                     <MenuItem value={'Semanal'}>Semanal</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl variant="standart">
+                <FormControl variant="standard">
                   <TextField 
                   id="outlined-basic3" 
                   label="Monto" 
@@ -476,30 +460,25 @@ export default function ClippedDrawer() {
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
         <Stack direction="row" spacing={1}>
-         
-              <Box
-  display="flex"
-  justifyContent="center"
-  alignItems="center"
->
-<img src="https://i.ibb.co/BBjBxrj/stan-Icon-1.png"
-              width="65" 
-              height="65" />
-        </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+          <img src="https://i.ibb.co/BBjBxrj/stan-Icon-1.png"
+                        width="65" 
+                        height="65" />
+            </Box>
               
           <Box
-  display="flex"
-  justifyContent="center"
-  alignItems="center"
->
-<Typography variant="h6" noWrap component="div" align="center">
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6" noWrap component="div" align="center">
             Standford Gym
             </Typography>
-        </Box>
-              
-            
-        
-            
+          </Box>         
       </Stack>
          
         </Toolbar>
@@ -517,10 +496,9 @@ export default function ClippedDrawer() {
           <List>
             {['Cuotas', 'Registrar Clientes', 'Reporte Diario'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
+                <ListItemButton component="a" href={index == 0 && "/pagos" || index == 1 && "/clientes" || index == 2 && "/reportediario"}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <PointOfSaleIcon /> : < PersonAddAlt1Icon/>}
-                    
+                    {index == 0 && <PointOfSaleIcon color="primary" /> || index == 1 && <PersonAddAlt1Icon color="primary"/> || index == 2 && <AssessmentIcon color="primary"/>}
                   </ListItemIcon>
                   <ListItemText primary={text}/>
                 </ListItemButton>
@@ -544,7 +522,7 @@ export default function ClippedDrawer() {
             '& .super-app-theme--true': {
               bgcolor: (theme) =>
                 //getBackgroundColor(theme.palette.success.main, theme.palette.mode),
-                '#01FE52',
+                '#5C9166',
               '&:hover': {
                 bgcolor: (theme) =>
                   getHoverBackgroundColor(

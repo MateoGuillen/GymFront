@@ -14,24 +14,17 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Badge from '@mui/material/Badge';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import Stack from '@mui/material/Stack';
 import { DataGrid, esES as esEsData } from '@mui/x-data-grid';
-import { TablePagination } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
@@ -40,23 +33,16 @@ import {esES as esEsDate} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import esLocale from 'date-fns/locale/es';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import { startOfToday, addDays, isAfter, parseISO } from 'date-fns'
 import { darken, lighten } from '@mui/material/styles';
-
 import Select from '@mui/material/Select';
 import Swal from 'sweetalert2'
-
-//import Swal from 'sweetalert2/dist/sweetalert2.js'
 import {alert2,alert3} from '../notifications/alerts'
-import PaidIcon from '@mui/icons-material/Paid';
-
 const axios = require('axios');
-import Container from '@mui/material/Container';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import FunctionsIcon from '@mui/icons-material/Functions';
 
 
 const getBackgroundColor = (color, mode) =>
@@ -184,7 +170,7 @@ const renderDetailsButton = (params) => {
                     <MenuItem value={'Semanal'}>Semanal</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl variant="standart">
+                <FormControl variant="standard">
                   <TextField 
                   id="outlined-basic3" 
                   label="Monto" 
@@ -353,16 +339,16 @@ export default function ClippedDrawer() {
      {field: 'tipo',headerName: 'Forma de Pago', width: 150},
      { field: 'fecha', headerName: 'Fecha', width: 100, type: 'date' },
      { field: 'monto', headerName: 'Monto', width: 120},
-     //{ field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
+     { field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
      //{ field: 'pagado', headerName: 'Pagado', width: 100 ,type: 'boolean'},
      //{ field: 'opciones', headerName: 'Opciones', width: 200},
-     {
+    /* {
        field: 'col6',
        headerName: 'Opciones',
        width: 150,
        renderCell: renderDetailsButton, // render a component in columns, renderDetailsButton is the component
        disableClickEventBubbling: true,
-   },
+   },*/
     /* {
        field: 'fullName',
        headerName: 'Full name',
@@ -515,12 +501,12 @@ export default function ClippedDrawer() {
       >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
-          <List>
-            {['Cuotas', 'Registrar Clientes'].map((text, index) => (
+        <List>
+            {['Cuotas', 'Registrar Clientes', 'Reporte Diario'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
+                <ListItemButton component="a" href={index == 0 && "/pagos" || index == 1 && "/clientes" || index == 2 && "/reportediario"}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <PointOfSaleIcon /> : < PersonAddAlt1Icon/>}
+                    {index == 0 && <PointOfSaleIcon color="primary"/> || index == 1 && <PersonAddAlt1Icon color="primary"/> || index == 2 && <AssessmentIcon color="primary"/>}
                   </ListItemIcon>
                   <ListItemText primary={text}/>
                 </ListItemButton>
@@ -534,7 +520,7 @@ export default function ClippedDrawer() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <br></br><br></br>
         <Typography variant="h4" color="primary" align="center">
-            Total Diario == {total}
+            Total Diario <FunctionsIcon/> {total}
         </Typography>
         <Typography variant="h4" color="primary" align="center">
             
@@ -544,27 +530,7 @@ export default function ClippedDrawer() {
           sx={{
             height: 400,
             width: '100%',
-            '& .super-app-theme--true': {
-              bgcolor: (theme) =>
-                //getBackgroundColor(theme.palette.success.main, theme.palette.mode),
-                '#01FE52',
-              '&:hover': {
-                bgcolor: (theme) =>
-                  getHoverBackgroundColor(
-                '#ff9800',
-                '#ff9800',
-                  ),
-              },
-            },
-            '& .super-app-theme--false': {
-              bgcolor: (theme) =>
-                '#FC6060  ',
-                //getBackgroundColor(theme.palette.error.main, theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) =>
-                  getHoverBackgroundColor('#ff9800', '#ff9800'),
-              },
-            },
+            
           }}
         >
             <Stack spacing={5}>

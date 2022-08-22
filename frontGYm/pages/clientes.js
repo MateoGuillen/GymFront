@@ -14,7 +14,6 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Badge from '@mui/material/Badge';
@@ -23,15 +22,8 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-
 import InputLabel from '@mui/material/InputLabel';
-
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { TextField } from '@mui/material';
@@ -42,11 +34,10 @@ import Stack from '@mui/material/Stack';
 import {esES } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import esLocale from 'date-fns/locale/es';
-
 import Swal from 'sweetalert2'
-
-//import Swal from 'sweetalert2/dist/sweetalert2.js'
 import {alert2,alert3} from '../notifications/alerts'
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 
 const axios = require('axios');
 
@@ -276,20 +267,27 @@ export default function ClippedDrawer() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            
-            Standford Gym 
-            <FitnessCenterIcon/>
+        <Stack direction="row" spacing={1}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+          <img src="https://i.ibb.co/BBjBxrj/stan-Icon-1.png"
+                        width="65" 
+                        height="65" />
+            </Box>
+              
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6" noWrap component="div" align="center">
+            Standford Gym
             </Typography>
-            <Search>
-                <SearchIconWrapper>
-                    <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                    placeholder="Buscar Cliente"
-                    inputProps={{ 'aria-label': 'search' }}
-                />
-          </Search>
+          </Box>         
+      </Stack>
           
         </Toolbar>
       </AppBar>
@@ -303,12 +301,12 @@ export default function ClippedDrawer() {
       >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
-          <List>
-            {['Pagos', 'Registrar Clientes'].map((text, index) => (
+        <List>
+            {['Cuotas', 'Registrar Clientes', 'Reporte Diario'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
+                <ListItemButton component="a" href={index == 0 && "/pagos" || index == 1 && "/clientes" || index == 2 && "/reportediario"}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <AttachMoneyIcon /> : < PersonAddAlt1Icon/>}
+                    {index == 0 && <PointOfSaleIcon color="primary" /> || index == 1 && <PersonAddAlt1Icon color="primary" /> || index == 2 && <AssessmentIcon color="primary"/>}
                   </ListItemIcon>
                   <ListItemText primary={text}/>
                 </ListItemButton>
