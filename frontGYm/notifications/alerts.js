@@ -4,7 +4,7 @@ const alert3 = {
     icon: 'success',
     title: "<h5 style='color:#ff9800'>" + "Registrado Correctamente!" + "</h5>",
     showConfirmButton: false,
-    timer: 1500,
+    timer: 2500,
     background: '#424242',
     }
 

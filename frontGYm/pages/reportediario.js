@@ -56,7 +56,6 @@ import PaidIcon from '@mui/icons-material/Paid';
 const axios = require('axios');
 import Container from '@mui/material/Container';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 
 
 
@@ -291,6 +290,7 @@ const Search = styled('div')(({ theme }) => ({
 export default function ClippedDrawer() {
 
   const [hoveredRow, setHoveredRow] = React.useState(null);
+  const [total, settotal] = React.useState('');
 
   const onMouseEnterRow = (event) => {
     const id = Number(event.currentTarget.getAttribute("data-id"));
@@ -309,8 +309,9 @@ export default function ClippedDrawer() {
   }, [])
 
   function refreshRowList() {
-    const cuotaAPI = axios.get('http://localhost:8080/api/cuotas/test')
+    const cuotaAPI = axios.get('http://localhost:8080/api/cuotas/hoy')
       .then((res) =>{
+        console.log(res)
         
         res.data.forEach((row,index) => {
           //rowsDate[index].id = addDays(row.fecha, 30);
@@ -332,7 +333,7 @@ export default function ClippedDrawer() {
             res.data[index].pagado = false;
           }
         });
-
+        settotal(res.data.pop().montoTotal)
         setrows(res.data)
       } )
       .catch(err => console.log(err))
@@ -515,12 +516,11 @@ export default function ClippedDrawer() {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {['Cuotas', 'Registrar Clientes', 'Reporte Diario'].map((text, index) => (
+            {['Cuotas', 'Registrar Clientes'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton component="a" href={index % 2 === 0 ? "/pagos" : "/clientes"}>
                   <ListItemIcon>
                     {index % 2 === 0 ? <PointOfSaleIcon /> : < PersonAddAlt1Icon/>}
-                    
                   </ListItemIcon>
                   <ListItemText primary={text}/>
                 </ListItemButton>
@@ -533,8 +533,11 @@ export default function ClippedDrawer() {
       
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <br></br><br></br>
-        <Typography variant="h3" color="primary" align="center">
-            Cuotas
+        <Typography variant="h4" color="primary" align="center">
+            Total Diario == {total}
+        </Typography>
+        <Typography variant="h4" color="primary" align="center">
+            
         </Typography>
 
         <Box
@@ -580,6 +583,7 @@ export default function ClippedDrawer() {
                 />
             </div>
             </Stack>
+            <h>{total}</h>
 
         </Box>
       </Box>

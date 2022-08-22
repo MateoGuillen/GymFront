@@ -147,7 +147,7 @@ export default function ClippedDrawer() {
     console.log(nombre)
   }
 
-  const [monto, setmonto] = React.useState('');
+  const [monto, setmonto] = React.useState('100000');
   const handleChangemonto = (event) =>{
     setmonto(event.target.value)
     console.log(monto)
@@ -165,7 +165,7 @@ export default function ClippedDrawer() {
   };
   
 
-  const [tipopago, settipopago] = React.useState('');
+  const [tipopago, settipopago] = React.useState('Mensual');
 
   const handleChangetipopago = (event) => {
     settipopago(event.target.value);
@@ -323,24 +323,22 @@ export default function ClippedDrawer() {
 
         <Toolbar />
 
-        <Typography variant="h3" color="primary" align="center">
+        
+
+
+       <Box display="flex"
+            justifyContent="center"
+            alignItems="center"
+            
+        >
+          <Stack spacing={2}>
+            <Typography variant="h3" color="primary" align="center">
           Registrar Clientes
         </Typography>
-
-
-       
-        <Box sx={{ width: '30%' }}>
-          <Stack spacing={3}>
-            <TextField id="outlined-basic1" label="Nombre y Apellido" variant="outlined"
+          <TextField id="outlined-basic1" label="Nombre y Apellido" variant="outlined"
               value={nombre}
               onChange={handleChangeNombre} />
-            {/*<TextField id="outlined-basic2" label="Telefono" variant="outlined" />*/}
-            <br></br>
-         </Stack>
-       </Box>
 
-       <Box sx={{ width: '30%' }}>
-          <Stack spacing={5}>
             <FormControl variant="standard" >
               <InputLabel id="labelSelect1">
                 Modalidad
