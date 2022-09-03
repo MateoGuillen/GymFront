@@ -38,10 +38,16 @@ import { startOfToday, addDays, isAfter, parseISO } from 'date-fns'
 import { darken, lighten } from '@mui/material/styles';
 import Select from '@mui/material/Select';
 import Swal from 'sweetalert2'
-import {alert2,alert3} from '../notifications/alerts'
+import {alert3, alert4} from '../notifications/alerts'
 const axios = require('axios');
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const getBackgroundColor = (color, mode) =>
@@ -72,12 +78,6 @@ const renderDetailsButton = (params) => {
     settipopago(event.target.value);
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () =>{
-    setOpen(true);
-  } 
-  const handleClose = () => setOpen(false);
-  const [value, setValue] = React.useState(startOfToday());
 
   const handleChange2 = (newValue) => {
     setValue(newValue);
@@ -88,6 +88,39 @@ const renderDetailsButton = (params) => {
     setMonto(event.target.value);
     console.log(monto)
   };
+
+  const [open, setOpen] = React.useState(false);
+
+
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const updateCuota = ()=>{
+
+
+      var cuotaPut = {
+        modalidad:params.row.modalidad,
+        tipo:params.row.tipo,
+        monto:params.row.monto,
+        fecha:params.row.fecha,
+        customerId: params.row.customerId
+       }
+       console.log(cuotaPut)
+  
+      axios.put('http://localhost:8080/api/cuotas/'+ params.row.id, cuotaPut
+      ).then(res2=>{
+        console.log(res2)
+        Swal.fire(alert4).then(setOpen(false)).then(window.location.reload())
+      }).catch(error => console.log(error))
+    
+    
+  }
+
 
   const guardarCuota = ()=>{
     var cuotaPost = {
@@ -112,6 +145,19 @@ const renderDetailsButton = (params) => {
   return (
       <div>
           <Button
+              id={params.row.id + "button"}
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{ marginLeft: 16 }}
+              onClick={handleOpen} //open modal
+          >
+              
+              <EditIcon/>
+          </Button>
+
+          <Button
+              id={params.row.id + "button2"}
               variant="contained"
               color="primary"
               size="small"
@@ -121,9 +167,30 @@ const renderDetailsButton = (params) => {
               Cobrar
               <AttachMoneyIcon/>
           </Button>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"¿Desea Cobrar?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancelar</Button>
+              <Button onClick={updateCuota} autoFocus>
+                Confirmar
+              </Button>
+            </DialogActions>
+          </Dialog>
           
-          
-          <Modal
+          {/*
+            <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
@@ -202,6 +269,9 @@ const renderDetailsButton = (params) => {
               
             </Box>
         </Modal>
+          
+          */}
+          
       </div>
   )
 }
@@ -293,7 +363,7 @@ export default function ClippedDrawer() {
   }, [])
 
   function refreshRowList() {
-    const cuotaAPI = axios.get('http://localhost:8080/api/cuotas/test')
+    axios.get('http://localhost:8080/api/cuotas/test')
       .then((res) =>{
         
         res.data.forEach((row,index) => {
@@ -309,8 +379,10 @@ export default function ClippedDrawer() {
           res.data[index].fechaProximoPago = parseISO(res.data[index].fechaProximoPago)
 
           console.log(res.data[index].fechaProximoPago)
+          console.log(res.data[index])
+
           
-          if( isAfter( res.data[index].fechaProximoPago ,startOfToday( ) ) || res.data[index].tipo == 'Diario'){
+          if( isAfter( res.data[index].fechaProximoPago ,startOfToday( ) )){
             res.data[index].pagado = true;
           }else{
             res.data[index].pagado = false;
@@ -324,7 +396,7 @@ export default function ClippedDrawer() {
 
   const columns = [
     // { field: 'id', headerName: 'ID', width: 70 },
-     { field: 'nombre', headerName: 'Nombre y Apellido', width: 260, headerAlign: 'center'},
+     { field: 'nombre', headerName: 'Nombre y Apellido', width: 260, headerAlign: 'center', editable: true},
    /*  {
        field: 'telefono',
        headerName: 'Telefono',
@@ -332,10 +404,18 @@ export default function ClippedDrawer() {
        width: 180,
      },*/
    
-     { field: 'modalidad', headerName: 'Modalidad', width: 200},
-     {field: 'tipo',headerName: 'Forma de Pago', width: 150},
-     { field: 'fecha', headerName: 'Fecha', width: 100, type: 'date' },
-     { field: 'monto', headerName: 'Monto', width: 120},
+     { field: 'modalidad', headerName: 'Modalidad', width: 200, editable: true,
+          type: 'singleSelect',
+          valueOptions: ['Musculacion', 'Funcional', 'Musculacion y Funcional']
+     },
+     {field: 'tipo',headerName: 'Forma de Pago', width: 150, editable: true,
+        type: 'singleSelect',
+        valueOptions: ['Mensual', 'Diario', 'Semanal']},
+     { field: 'fecha', headerName: 'Fecha', width: 100, type: 'date' , editable: true},
+     { field: 'monto', headerName: 'Monto', width: 120, editable: true,
+    
+       type: 'singleSelect',
+        valueOptions: [50000, 10000, 100000, 150000]},
      //{ field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
      //{ field: 'pagado', headerName: 'Pagado', width: 100 ,type: 'boolean'},
      //{ field: 'opciones', headerName: 'Opciones', width: 200},
@@ -511,7 +591,7 @@ export default function ClippedDrawer() {
       
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <br></br><br></br>
-        <Typography variant="h3" color="primary" align="center">
+        <Typography id="tituloPrincipal" variant="h3" color="primary" align="center">
             Cuotas
         </Typography>
 
@@ -545,15 +625,13 @@ export default function ClippedDrawer() {
             <Stack spacing={5}>
               <div style={{ height: 800, width: '100%' }}>
                 <DataGrid
+                  experimentalFeatures={{ newEditingApi: true }}
                   localeText={esEsData.components.MuiDataGrid.defaultProps.localeText}
                   rows={rows}
                   columns={columns}
                   pageSize={20}
                   rowsPerPageOptions={[20,30,40]}
-                  getRowClassName={(params) => `super-app-theme--${params.row.pagado}`}s
-
-                  
-
+                  getRowClassName={(params) => `super-app-theme--${params.row.pagado}`}
                   //checkboxSelection
                 />
             </div>

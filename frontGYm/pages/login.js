@@ -52,7 +52,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(http://mycomputo.com.mx/wp-content/uploads/2019/12/1571485195_164961-1.jpg)',
+            backgroundImage: 'url(https://i.ibb.co/Kr3JkJ4/1571485195-164961-1.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
