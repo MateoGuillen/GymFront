@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+const axios = require('axios');
 
 function Copyright(props) {
   return (
@@ -30,8 +31,31 @@ function Copyright(props) {
 
 export default function SignInSide() {
 
-  const login =()=>{
-    window.location.href="/pagos"
+  const [username, setusername] = React.useState('');
+  const handleChangeusername = (event) =>{
+    setusername(event.target.value)
+    //console.log(username)
+  }
+
+  const [password, setpassword] = React.useState('');
+  const handleChangepassword = (event) =>{
+    setpassword(event.target.value)
+    //console.log(password)
+  }
+
+  const login =(event)=>{
+    //window.location.href="/pagos"
+    var user = {
+      username: username,
+      password: password
+    }
+    console.log(user)
+    axios.post('http://localhost:8080/api/users/login', user
+    ).then(res=>{
+      console.log(res)
+      window.location.href="/pagos"
+      //Swal.fire(alert3).then(setOpen(false)).then(window.location.reload())
+    }).catch(error => console.log(error))
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -84,7 +108,7 @@ export default function SignInSide() {
             <Typography component="h1" variant="h3">
                Login
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={login} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -94,6 +118,8 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={username}
+                onChange={handleChangeusername}
               />
               <TextField
                 margin="normal"
@@ -104,6 +130,8 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={handleChangepassword}
               />
 {/*<FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -114,22 +142,11 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={login}
+                //onClick={login}
               >
                 Ingresar
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {/*"Don't have an account? Sign Up"*/}
-                  </Link>
-                </Grid>
-              </Grid>
+              
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
