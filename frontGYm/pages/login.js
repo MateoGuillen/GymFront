@@ -43,17 +43,23 @@ export default function SignInSide() {
     //console.log(password)
   }
 
-  const login =(event)=>{
-    //window.location.href="/pagos"
+  const login =()=>{
+    
     var user = {
       username: username,
       password: password
     }
-    console.log(user)
+    //console.log(user)
     axios.post('http://localhost:8080/api/users/login', user
     ).then(res=>{
       console.log(res)
-      window.location.href="/pagos"
+      //here store the token in localstore or a cookie
+      var auth_token = res.data.data.token
+      localStorage.setItem('token',auth_token)
+      console.log(localStorage.getItem('token'))
+      //console.log(res.data.data.token)
+      //axios.defaults.headers.common['Authorization'] = auth_token ? `Bearer ${auth_token}` : '';
+      //window.location.href="/pagos"
       //Swal.fire(alert3).then(setOpen(false)).then(window.location.reload())
     }).catch(error => console.log(error))
   }
@@ -108,7 +114,7 @@ export default function SignInSide() {
             <Typography component="h1" variant="h3">
                Login
             </Typography>
-            <Box component="form" noValidate onSubmit={login} sx={{ mt: 1 }}>
+            <Box  sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -142,7 +148,7 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                //onClick={login}
+                onClick={login}
               >
                 Ingresar
               </Button>
