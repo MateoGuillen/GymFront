@@ -39,7 +39,6 @@ import { darken, lighten } from '@mui/material/styles';
 import Select from '@mui/material/Select';
 import Swal from 'sweetalert2'
 import {alert3, alert4} from '../notifications/alerts'
-const axios = require('axios');
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import Dialog from '@mui/material/Dialog';
@@ -48,6 +47,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
+import instance from '../utils/axiosconf'
 
 
 const getBackgroundColor = (color, mode) =>
@@ -94,6 +94,7 @@ const renderDetailsButton = (params) => {
 
 
   const handleClose = () => {
+    //console.log(instance.defaults.headers.common)
     setOpen(false);
   };
   const handleOpen = () => {
@@ -112,7 +113,7 @@ const renderDetailsButton = (params) => {
        }
        console.log(cuotaPut)
   
-      axios.put('http://localhost:8080/api/cuotas/'+ params.row.id, cuotaPut
+      instance.put('/api/cuotas/'+ params.row.id, cuotaPut
       ).then(res2=>{
         console.log(res2)
         Swal.fire(alert4).then(setOpen(false)).then(window.location.reload())
@@ -132,7 +133,7 @@ const renderDetailsButton = (params) => {
      }
      console.log(cuotaPost)
 
-    axios.post('http://localhost:8080/api/cuotas', cuotaPost
+    instance.post('/api/cuotas', cuotaPost
     ).then(res2=>{
       console.log(res2)
       Swal.fire(alert3).then(setOpen(false)).then(window.location.reload())
@@ -363,7 +364,7 @@ export default function ClippedDrawer() {
   }, [])
 
   function refreshRowList() {
-    axios.get('http://localhost:8080/api/cuotas/test')
+    instance.get('/cuotas/test')
       .then((res) =>{
         
         res.data.forEach((row,index) => {

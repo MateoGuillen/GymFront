@@ -37,7 +37,7 @@ import Swal from 'sweetalert2'
 import {alert2,alert3} from '../notifications/alerts'
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-const axios = require('axios');
+import instance from '../utils/axiosconf'
 
 const drawerWidth = 240;
   
@@ -46,7 +46,7 @@ export default function ClippedDrawer() {
 
   const onClickRegistrar = ()=>{
     //alert3.title="Registrado Correctamente!"
-    axios.post('http://localhost:8080/api/customers', 
+    instance.post('/customers', 
     {
       nombre:nombre
     }
@@ -62,7 +62,7 @@ export default function ClippedDrawer() {
        }
        console.log(cuotaPost)
 
-      axios.post('http://localhost:8080/api/cuotas', cuotaPost
+      instance.post('/cuotas', cuotaPost
       ).then(res2=>{
         console.log(res2)
         Swal.fire(alert3)

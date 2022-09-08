@@ -39,7 +39,7 @@ import { darken, lighten } from '@mui/material/styles';
 import Select from '@mui/material/Select';
 import Swal from 'sweetalert2'
 import {alert2,alert3} from '../notifications/alerts'
-const axios = require('axios');
+import instance from '../utils/axiosconf'
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import FunctionsIcon from '@mui/icons-material/Functions';
@@ -100,7 +100,7 @@ const renderDetailsButton = (params) => {
      }
      console.log(cuotaPost)
 
-    axios.post('http://localhost:8080/api/cuotas', cuotaPost
+    instance.post('/cuotas', cuotaPost
     ).then(res2=>{
       console.log(res2)
       Swal.fire(alert3).then(setOpen(false)).then(window.location.reload())
@@ -295,7 +295,7 @@ export default function ClippedDrawer() {
   }, [])
 
   function refreshRowList() {
-    const cuotaAPI = axios.get('http://localhost:8080/api/cuotas/hoy')
+    const cuotaAPI = instance.get('/cuotas/hoy')
       .then((res) =>{
         console.log(res)
         

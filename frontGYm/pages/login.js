@@ -12,7 +12,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-const axios = require('axios');
+//const axios = require('axios');
+import instance from '../utils/axiosconf'
+
 
 function Copyright(props) {
   return (
@@ -50,16 +52,17 @@ export default function SignInSide() {
       password: password
     }
     //console.log(user)
-    axios.post('http://localhost:8080/api/users/login', user
+    instance.post('/users/login', user
     ).then(res=>{
       console.log(res)
       //here store the token in localstore or a cookie
       var auth_token = res.data.data.token
       localStorage.setItem('token',auth_token)
-      console.log(localStorage.getItem('token'))
+      //console.log(localStorage.getItem('token'))
       //console.log(res.data.data.token)
       //axios.defaults.headers.common['Authorization'] = auth_token ? `Bearer ${auth_token}` : '';
-      //window.location.href="/pagos"
+     // console.log(instance.headers.Authorization)
+      window.location.href="/pagos"
       //Swal.fire(alert3).then(setOpen(false)).then(window.location.reload())
     }).catch(error => console.log(error))
   }
