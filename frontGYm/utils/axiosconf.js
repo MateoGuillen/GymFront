@@ -17,7 +17,7 @@ const fetchClient = () => {
 
     const token = localStorage.getItem('token');
     //const token = "hola"
-    console.log("token-->", token)
+    //console.log("token-->", token)
     config.headers.Authorization =  token ? `Bearer ${token}` : '';
     return config;
   });

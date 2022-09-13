@@ -38,7 +38,7 @@ import { startOfToday, addDays, isAfter, parseISO } from 'date-fns'
 import { darken, lighten } from '@mui/material/styles';
 import Select from '@mui/material/Select';
 import Swal from 'sweetalert2'
-import {alert3, alert4} from '../notifications/alerts'
+import {alert3, alert4, alert5} from '../notifications/alerts'
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import Dialog from '@mui/material/Dialog';
@@ -89,7 +89,14 @@ const renderDetailsButton = (params) => {
     console.log(monto)
   };
 
+  const [fecha, setfecha] = React.useState(new Date());
+  const handleChangefecha = event => {
+    setfecha(event.target.value);
+    //console.log(fecha)
+  };
+
   const [open, setOpen] = React.useState(false);
+  const [open2, setopen2] = React.useState(false);
 
 
 
@@ -99,6 +106,14 @@ const renderDetailsButton = (params) => {
   };
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleClose2 = () => {
+    //console.log(instance.defaults.headers.common)
+    setopen2(false);
+  };
+  const handleOpen2 = () => {
+    setopen2(true);
   };
 
   const updateCuota = ()=>{
@@ -113,10 +128,10 @@ const renderDetailsButton = (params) => {
        }
        console.log(cuotaPut)
   
-      instance.put('/api/cuotas/'+ params.row.id, cuotaPut
+      instance.put('/cuotas/'+ params.row.id, cuotaPut
       ).then(res2=>{
         console.log(res2)
-        Swal.fire(alert4).then(setOpen(false)).then(window.location.reload())
+        Swal.fire(alert5).then(setOpen(false)).then(window.location.reload())
       }).catch(error => console.log(error))
     
     
@@ -125,18 +140,18 @@ const renderDetailsButton = (params) => {
 
   const guardarCuota = ()=>{
     var cuotaPost = {
-      modalidad:modalidad,
-      tipo:tipopago,
-      monto:monto,
-      fecha:value,
-      customerId: params.row.customerId
+        modalidad:params.row.modalidad,
+        tipo:params.row.tipo,
+        monto:params.row.monto,
+        fecha:params.row.fecha,
+        customerId: params.row.customerId
      }
      console.log(cuotaPost)
 
-    instance.post('/api/cuotas', cuotaPost
+    instance.post('/cuotas', cuotaPost
     ).then(res2=>{
       console.log(res2)
-      Swal.fire(alert3).then(setOpen(false)).then(window.location.reload())
+      Swal.fire(alert3).then(setopen2(false)).then(window.location.reload())
     }).catch(error => console.log(error))
   }
 
@@ -163,11 +178,32 @@ const renderDetailsButton = (params) => {
               color="primary"
               size="small"
               style={{ marginLeft: 16 }}
-              onClick={handleOpen} //open modal
+              onClick={handleOpen2} //open modal
           >
               Cobrar
               <AttachMoneyIcon/>
           </Button>
+
+          <Dialog
+            open={open2}
+            onClose={handleClose2}
+            aria-labelledby="alert-dialog-title2"
+            aria-describedby="alert-dialog-description2"
+          >
+            <DialogTitle id="alert-dialog-title2">
+              {"¿Desea Cobrar?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description2">
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose2}>Cancelar</Button>
+              <Button onClick={guardarCuota} autoFocus>
+                Confirmar
+              </Button>
+            </DialogActions>
+          </Dialog>
 
           <Dialog
             open={open}
@@ -176,7 +212,7 @@ const renderDetailsButton = (params) => {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"¿Desea Cobrar?"}
+              {"¿Desea Editar?"}
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
@@ -411,19 +447,19 @@ export default function ClippedDrawer() {
      },
      {field: 'tipo',headerName: 'Forma de Pago', width: 150, editable: true,
         type: 'singleSelect',
-        valueOptions: ['Mensual', 'Diario', 'Semanal']},
+        valueOptions: ['Mensual', 'Diario', 'Semanal', 'Quincenal']},
      { field: 'fecha', headerName: 'Fecha', width: 100, type: 'date' , editable: true},
      { field: 'monto', headerName: 'Monto', width: 120, editable: true,
     
        type: 'singleSelect',
-        valueOptions: [50000, 10000, 100000, 150000]},
+        valueOptions: [50000, 10000, 100000, 150000, 40000,70000]},
      //{ field: 'fechaProximoPago', headerName: 'Fecha de Proximo Pago', width: 230, type: 'date' },
      //{ field: 'pagado', headerName: 'Pagado', width: 100 ,type: 'boolean'},
      //{ field: 'opciones', headerName: 'Opciones', width: 200},
      {
        field: 'col6',
        headerName: 'Opciones',
-       width: 150,
+       width: 250,
        renderCell: renderDetailsButton, // render a component in columns, renderDetailsButton is the component
        disableClickEventBubbling: true,
    },

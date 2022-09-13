@@ -39,7 +39,12 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import instance from '../utils/axiosconf'
 
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+
 const drawerWidth = 240;
+
+const settings = ['Logout'];
   
 export default function ClippedDrawer() {
 
@@ -78,7 +83,8 @@ export default function ClippedDrawer() {
   const [tiposPagos, settiposPagos] = React.useState([
     "Mensual",
     "Diario",
-    "Semanal"
+    "Semanal",
+    "Quincenal"
   ]);
 
 
@@ -88,11 +94,15 @@ export default function ClippedDrawer() {
     console.log(nombre)
   }
 
-  const [monto, setmonto] = React.useState('100000');
+  const [monto, setmonto] = React.useState('50000');
   const handleChangemonto = (event) =>{
     setmonto(event.target.value)
-    console.log(monto)
+    //console.log(monto)
   }
+  const [montosDisponibles, setmontosDisponibles] = React.useState([
+    50000, 100000, 10000,70000,150000, 40000
+  ]);
+  
 
   const [value, setValue] = React.useState(new Date());
   const handleChange2 = (newValue) => {
@@ -135,6 +145,24 @@ export default function ClippedDrawer() {
     handleMobileMenuClose();
   };
 
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
 
   const menuId = 'primary-search-account-menu';
 
@@ -144,7 +172,11 @@ export default function ClippedDrawer() {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-        <Stack direction="row" spacing={1}>
+        <Stack
+         direction="row"
+         justifyContent="space-between"
+         alignItems="flex-start"
+         spacing={2}>
           <Box
             display="flex"
             justifyContent="center"
@@ -163,9 +195,38 @@ export default function ClippedDrawer() {
             <Typography variant="h6" noWrap component="div" align="center">
             Standford Gym
             </Typography>
-          </Box>         
+          </Box>  
+          <Box>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>       
       </Stack>
-          
+      
         </Toolbar>
       </AppBar>
       <Drawer
@@ -254,11 +315,29 @@ export default function ClippedDrawer() {
               </Select>
 
             </FormControl>
+
+            <FormControl variant="standard" >
+            <InputLabel id="labelSelect3">
+                Monto
+              </InputLabel>
+              <Select
+                labelId="labelSelect3"
+                id="selectMonto"
+                value={monto}
+                label="Forma de Pago"
+                onChange={handleChangemonto}
+              >
+                {montosDisponibles.map((value) => {
+                  return <MenuItem value={value}>{value}</MenuItem>;
+                })}
+                {/* <MenuItem value="Mensual">Mensual</MenuItem>
+                <MenuItem value="Diario">Diario</MenuItem>
+                <MenuItem value="Semanal">Semanal</MenuItem> */}
+              </Select>
+
+            </FormControl>
             
 
-              <TextField id="outlined-basic1" label="Monto" variant="outlined"
-                value={monto}
-                onChange={handleChangemonto} />
              
 
             <LocalizationProvider 
