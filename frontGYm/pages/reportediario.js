@@ -299,28 +299,33 @@ export default function ClippedDrawer() {
       .then((res) =>{
         console.log(res)
         
-        res.data.forEach((row,index) => {
-          //rowsDate[index].id = addDays(row.fecha, 30);
-         /* if(rows[index].tipoPago == 'Mensual'){
-            rows[index].fechaProximoPago = addDays(row.fecha, 30);
-          }else if(rows[index].tipoPago == 'Semanal'){
-            rows[index].fechaProximoPago = addDays(row.fecha, 7);
-          }*/
-
-          //convert string to Date
-          res.data[index].fecha = parseISO(res.data[index].fecha)
-          res.data[index].fechaProximoPago = parseISO(res.data[index].fechaProximoPago)
-
-          console.log(res.data[index].fechaProximoPago)
-          
-          if( isAfter( res.data[index].fechaProximoPago ,startOfToday( ) ) || res.data[index].tipo == 'Diario'){
-            res.data[index].pagado = true;
-          }else{
-            res.data[index].pagado = false;
-          }
-        });
-        settotal(res.data.pop().montoTotal)
-        setrows(res.data)
+        if(res.data.login === false){
+          window.location.href = "/login"
+        }else{
+          res.data.forEach((row,index) => {
+            //rowsDate[index].id = addDays(row.fecha, 30);
+           /* if(rows[index].tipoPago == 'Mensual'){
+              rows[index].fechaProximoPago = addDays(row.fecha, 30);
+            }else if(rows[index].tipoPago == 'Semanal'){
+              rows[index].fechaProximoPago = addDays(row.fecha, 7);
+            }*/
+  
+            //convert string to Date
+            res.data[index].fecha = parseISO(res.data[index].fecha)
+            res.data[index].fechaProximoPago = parseISO(res.data[index].fechaProximoPago)
+  
+            console.log(res.data[index].fechaProximoPago)
+            
+            if( isAfter( res.data[index].fechaProximoPago ,startOfToday( ) ) || res.data[index].tipo == 'Diario'){
+              res.data[index].pagado = true;
+            }else{
+              res.data[index].pagado = false;
+            }
+          });
+          settotal(res.data.pop().montoTotal)
+          setrows(res.data)
+        }
+        
       } )
       .catch(err => console.log(err))
   }

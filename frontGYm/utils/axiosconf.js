@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+//console.log(process.env.NEXT_PUBLIC_API_PRODUCTION)
 const fetchClient = () => {
   const defaultOptions = {
-    baseURL: 'http://localhost:8080/api',
+    baseURL: process.env.NEXT_PUBLIC_API_DEV,
     //method: 'get',
     //headers: {
       //'Content-Type': 'application/json',

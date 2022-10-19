@@ -48,6 +48,20 @@ const settings = ['Logout'];
   
 export default function ClippedDrawer() {
 
+  React.useEffect(() => {
+    validtokenjwt();
+  }, []);
+
+  const validtokenjwt = ()=>{
+    instance.get('/validtoken').then((res=>{
+      console.log(res.data)
+      if (res.data.login === false){
+        //window.location.href = "/login"
+      }else{
+        console.log("Logueado con Exito, JWT valido")
+      }
+    }))
+  }
 
   const onClickRegistrar = ()=>{
     //alert3.title="Registrado Correctamente!"
@@ -175,58 +189,19 @@ export default function ClippedDrawer() {
         <Stack
          direction="row"
          justifyContent="space-between"
-         alignItems="flex-start"
-         spacing={2}>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-          <img src="https://i.ibb.co/BBjBxrj/stan-Icon-1.png"
-                        width="65" 
-                        height="65" />
-            </Box>
-              
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography variant="h6" noWrap component="div" align="center">
-            Standford Gym
-            </Typography>
-          </Box>  
-          <Box>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>       
+         spacing={1}>
+
+        <Stack
+         direction="row"
+         justifyContent="flex-start"
+         spacing={1}>
+        
+        <p>hola</p>
+        <p>mundo</p>
+        </Stack>
+                 
       </Stack>
-      
+        <p>nel</p>
         </Toolbar>
       </AppBar>
       <Drawer
