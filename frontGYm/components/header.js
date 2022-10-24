@@ -6,9 +6,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import LogoutIcon from "@mui/icons-material/Logout";
 import instance from "../utils/axiosconf";
 import { Stack } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useRouter } from 'next/router'
 
 
 
@@ -17,12 +18,14 @@ export default function Header() {
   React.useEffect(() => {
     validtokenjwt();
   }, []);
+  const router = useRouter()
 
   const validtokenjwt = () => {
     instance.get("/validtoken").then((res) => {
       console.log(res.data);
       if (res.data.login === false) {
         //window.location.href = "/login"
+        router.push('/login')
       } else {
         console.log("Logueado con Exito, JWT valido");
         setusername(res.data.username);
@@ -65,12 +68,11 @@ export default function Header() {
         </Typography>
         
         <Stack>
-        <Typography variant="overline" component="div" sx={{ flexGrow: 1 }}>
-          {username}
+        
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+           Usuario : {username}
         </Typography>
-        <Button color="inherit" onClick={logout}>
-          <LogoutIcon /> Logout
-        </Button>
+        
         
         </Stack>
         

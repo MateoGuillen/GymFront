@@ -29,9 +29,9 @@ export default function DrawerComponent() {
     <Drawer
       variant="permanent"
       sx={{
-        width: 200,
+        width: 240,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: 200, boxSizing: "border-box" },
+        [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" },
       }}
     >
       <Toolbar />

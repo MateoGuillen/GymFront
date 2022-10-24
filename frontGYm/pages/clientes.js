@@ -56,7 +56,7 @@ export default function ClippedDrawer() {
     instance.get('/validtoken').then((res=>{
       console.log(res.data)
       if (res.data.login === false){
-        //window.location.href = "/login"
+        window.location.href = "/login"
       }else{
         console.log("Logueado con Exito, JWT valido")
       }
