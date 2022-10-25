@@ -1,19 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -26,31 +16,12 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import esLocale from "date-fns/locale/es";
 import Swal from "sweetalert2";
 import { alert3 } from "../notifications/alerts";
-import AssessmentIcon from "@mui/icons-material/Assessment";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import instance from "../utils/axiosconf";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import DrawerComponent from "../components/drawer";
 
-
-const drawerWidth = 240;
-
-const settings = ["Logout"];
-
-export default function ClippedDrawer() {
-  React.useEffect(() => {
-    validtokenjwt();
-  }, []);
-
-  const validtokenjwt = () => {
-    instance.get("/validtoken").then((res) => {
-      console.log(res.data);
-      if (res.data.login === false) {
-        window.location.href = "/login";
-      } else {
-        console.log("Logueado con Exito, JWT valido");
-      }
-    });
-  };
-
+export default function RegistarClientes() {
   const onClickRegistrar = () => {
     //alert3.title="Registrado Correctamente!"
     instance
@@ -58,7 +29,7 @@ export default function ClippedDrawer() {
         nombre: nombre,
       })
       .then((res1) => {
-        console.log(res1);
+        //console.log(res1);
         var cuotaPost = {
           modalidad: modalidad,
           tipo: tipopago,
@@ -66,19 +37,19 @@ export default function ClippedDrawer() {
           fecha: value,
           customerId: res1.data.id,
         };
-        console.log(cuotaPost);
+        //console.log(cuotaPost);
 
         instance
           .post("/cuotas", cuotaPost)
           .then((res2) => {
-            console.log(res2);
+            //console.log(res2);
             Swal.fire(alert3);
           })
           .catch((error) => console.log(error));
         //Swal.fire(alert3)
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   };
 
@@ -92,7 +63,7 @@ export default function ClippedDrawer() {
   const [nombre, setNombre] = React.useState("");
   const handleChangeNombre = (event) => {
     setNombre(event.target.value);
-    console.log(nombre);
+    //console.log(nombre);
   };
 
   const [monto, setmonto] = React.useState("50000");
@@ -111,7 +82,7 @@ export default function ClippedDrawer() {
 
   const [modalidad, setmodalidad] = React.useState("Musculacion");
   const handleChangeModalidad = (event) => {
-    console.log(modalidad);
+    //console.log(modalidad);
     setmodalidad(event.target.value);
   };
 
@@ -119,200 +90,118 @@ export default function ClippedDrawer() {
 
   const handleChangetipopago = (event) => {
     settipopago(event.target.value);
-    console.log(tipopago);
+    //console.log(tipopago);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const menuId = "primary-search-account-menu";
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
-        <Toolbar>
-          <Stack direction="row" justifyContent="space-between" spacing={1}>
-            <Stack direction="row" justifyContent="flex-start" spacing={1}>
-              <p>hola</p>
-              <p>mundo</p>
-            </Stack>
-          </Stack>
-          <p>nel</p>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            {["Cuotas", "Registrar Clientes", "Reporte Diario"].map(
-              (text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton
-                    component="a"
-                    href={
-                      (index == 0 && "/pagos") ||
-                      (index == 1 && "/clientes") ||
-                      (index == 2 && "/reportediario")
-                    }
-                  >
-                    <ListItemIcon>
-                      {(index == 0 && <PointOfSaleIcon color="primary" />) ||
-                        (index == 1 && <PersonAddAlt1Icon color="primary" />) ||
-                        (index == 2 && <AssessmentIcon color="primary" />)}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              )
-            )}
-          </List>
-          <Divider />
-        </Box>
-      </Drawer>
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Header />
+        <DrawerComponent />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Stack spacing={2}>
-            <Typography variant="h3" color="primary" align="center">
-              Registrar Clientes
-            </Typography>
-            <TextField
-              id="outlined-basic1"
-              label="Nombre y Apellido"
-              variant="outlined"
-              value={nombre}
-              onChange={handleChangeNombre}
-            />
-
-            <FormControl variant="standard">
-              <InputLabel id="labelSelect1">Modalidad</InputLabel>
-              <Select
-                labelId="labelSelect1"
-                id="selectModalidad"
-                value={modalidad}
-                label="Modalidad"
-                onChange={handleChangeModalidad}
+        <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
+          <br></br>
+          <br></br>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Stack spacing={2}>
+              <Typography
+                variant="h3"
+                color="primary"
+                align="center"
+                margin={2}
               >
-                <MenuItem value="Musculacion">Musculacion</MenuItem>
-                <MenuItem value="Funcional">Funcional</MenuItem>
-                <MenuItem value="Musculacion y Funcional">
-                  Musculacion y Funcional
-                </MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl variant="standard">
-              <InputLabel id="labelSelect2">Forma de Pago</InputLabel>
-              <Select
-                labelId="labelSelect2"
-                id="selectTipoPago"
-                value={tipopago}
-                label="Forma de Pago"
-                onChange={handleChangetipopago}
-              >
-                {tiposPagos.map((value) => {
-                  return <MenuItem value={value}>{value}</MenuItem>;
-                })}
-                {/* <MenuItem value="Mensual">Mensual</MenuItem>
-                <MenuItem value="Diario">Diario</MenuItem>
-                <MenuItem value="Semanal">Semanal</MenuItem> */}
-              </Select>
-            </FormControl>
-
-            <FormControl variant="standard">
-              <InputLabel id="labelSelect3">Monto</InputLabel>
-              <Select
-                labelId="labelSelect3"
-                id="selectMonto"
-                value={monto}
-                label="Forma de Pago"
-                onChange={handleChangemonto}
-              >
-                {montosDisponibles.map((value) => {
-                  return <MenuItem value={value}>{value}</MenuItem>;
-                })}
-                {/* <MenuItem value="Mensual">Mensual</MenuItem>
-                <MenuItem value="Diario">Diario</MenuItem>
-                <MenuItem value="Semanal">Semanal</MenuItem> */}
-              </Select>
-            </FormControl>
-
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={esLocale}
-              localeText={
-                esES.components.MuiLocalizationProvider.defaultProps.localeText
-              }
-            >
-              <DesktopDatePicker
-                label="Fecha"
-                inputFormat="dd/MM/yyyy"
-                value={value}
-                onChange={handleChange2}
-                renderInput={(params) => <TextField {...params} />}
+                Registrar Clientes
+              </Typography>
+              <TextField
+                id="outlined-basic1"
+                label="Nombre y Apellido"
+                variant="outlined"
+                value={nombre}
+                onChange={handleChangeNombre}
               />
-            </LocalizationProvider>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={onClickRegistrar}
-            >
-              Registrar
-            </Button>
-          </Stack>
+              <FormControl variant="standard">
+                <InputLabel id="labelSelect1">Modalidad</InputLabel>
+                <Select
+                  labelId="labelSelect1"
+                  id="selectModalidad"
+                  value={modalidad}
+                  label="Modalidad"
+                  onChange={handleChangeModalidad}
+                >
+                  <MenuItem value="Musculacion">Musculacion</MenuItem>
+                  <MenuItem value="Funcional">Funcional</MenuItem>
+                  <MenuItem value="Musculacion y Funcional">
+                    Musculacion y Funcional
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl variant="standard">
+                <InputLabel id="labelSelect2">Forma de Pago</InputLabel>
+                <Select
+                  labelId="labelSelect2"
+                  id="selectTipoPago"
+                  value={tipopago}
+                  label="Forma de Pago"
+                  onChange={handleChangetipopago}
+                >
+                  {tiposPagos.map((value) => {
+                    return <MenuItem value={value}>{value}</MenuItem>;
+                  })}
+                  {/* <MenuItem value="Mensual">Mensual</MenuItem>
+                <MenuItem value="Diario">Diario</MenuItem>
+                <MenuItem value="Semanal">Semanal</MenuItem> */}
+                </Select>
+              </FormControl>
+
+              <FormControl variant="standard">
+                <InputLabel id="labelSelect3">Monto</InputLabel>
+                <Select
+                  labelId="labelSelect3"
+                  id="selectMonto"
+                  value={monto}
+                  label="Forma de Pago"
+                  onChange={handleChangemonto}
+                >
+                  {montosDisponibles.map((value) => {
+                    return <MenuItem value={value}>{value}</MenuItem>;
+                  })}
+                  {/* <MenuItem value="Mensual">Mensual</MenuItem>
+                <MenuItem value="Diario">Diario</MenuItem>
+                <MenuItem value="Semanal">Semanal</MenuItem> */}
+                </Select>
+              </FormControl>
+
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={esLocale}
+                localeText={
+                  esES.components.MuiLocalizationProvider.defaultProps
+                    .localeText
+                }
+              >
+                <DesktopDatePicker
+                  label="Fecha"
+                  inputFormat="dd/MM/yyyy"
+                  value={value}
+                  onChange={handleChange2}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={onClickRegistrar}
+              >
+                Registrar
+              </Button>
+            </Stack>
+          </Box>
+          <Footer />
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
