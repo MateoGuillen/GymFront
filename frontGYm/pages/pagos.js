@@ -25,20 +25,10 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Stack from "@mui/material/Stack";
 import { DataGrid, esES as esEsData } from "@mui/x-data-grid";
-import Modal from "@mui/material/Modal";
-import { TextField } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { esES as esEsDate } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import esLocale from "date-fns/locale/es";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import { startOfToday, addDays, isAfter, parseISO } from "date-fns";
+import { startOfToday, isAfter, parseISO } from "date-fns";
 import { darken, lighten } from "@mui/material/styles";
-import Select from "@mui/material/Select";
 import Swal from "sweetalert2";
-import { alert3, alert4, alert5 } from "../notifications/alerts";
+import { alert3, alert5 } from "../notifications/alerts";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Dialog from "@mui/material/Dialog";
@@ -374,11 +364,8 @@ export default function ClippedDrawer() {
   const [rows, setrows] = React.useState([]);
 
   React.useEffect(() => {
-
     refreshRowList();
   }, []);
-
-  
 
   function refreshRowList() {
     instance
@@ -386,7 +373,7 @@ export default function ClippedDrawer() {
       .then((res) => {
         console.log(res.data);
         if (res.request.login == false) {
-          window.location.href = "/login"
+          //window.location.href = "/login";
         } else {
           res.data.forEach((row, index) => {
             //rowsDate[index].id = addDays(row.fecha, 30);

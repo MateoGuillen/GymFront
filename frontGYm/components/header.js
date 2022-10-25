@@ -22,12 +22,12 @@ export default function Header() {
 
   const validtokenjwt = () => {
     instance.get("/validtoken").then((res) => {
-      console.log(res.data);
+      //console.log(res.data);
       if (res.data.login === false) {
         //window.location.href = "/login"
         router.push('/login')
       } else {
-        console.log("Logueado con Exito, JWT valido");
+        //console.log("Logueado con Exito, JWT valido");
         setusername(res.data.username);
       }
     });
